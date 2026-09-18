@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AgentShield AI Security Layer</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+
+    <nav>
+
+        <div class="logo">
+            AGENT<span>SHIELD</span>
+        </div>
+
+        <div class="nav-links">
+            <a href="#scanner">Scanner</a>
+            <a href="#pipeline">Security Pipeline</a>
+            <a href="#evaluation">Evaluation</a>
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <header class="hero">
+
+        <div class="hero-content">
+
+            <div class="badge">
+                AI AGENT SECURITY LAYER
+            </div>
+
+            <h1>
+                Defend AI Agents
+                <span>Before They Act.</span>
+            </h1>
+
+            <p>
+                Inspect user inputs, retrieved content and tool actions
+                to detect prompt injection, malicious instructions,
+                tool manipulation and data-exfiltration attempts.
+            </p>
+
+            <div class="hero-buttons">
+
+                <button
+                    class="primary"
+                    onclick="goScanner()">
+                    Run Security Scan
+                </button>
+
+                <button
+                    class="secondary"
+                    onclick="goEvaluation()">
+                    Test Adversarial Prompts
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         STATS
+    ========================== -->
+
+    <section class="stats">
+
+        <div class="stat-card">
+
+            <h2>5</h2>
+
+            <p>
+                Security Layers
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h2 id="blockedCount">
+                0
+            </h2>
+
+            <p>
+                Threats Blocked
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h2 id="scanCount">
+                0
+            </h2>
+
+            <p>
+                Scans Performed
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h2>100</h2>
+
+            <p>
+                Maximum Risk Score
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         SECURITY SCANNER
+    ========================== -->
+
+    <section
+        class="section"
+        id="scanner">
+
+        <div class="section-header">
+
+            <div class="badge">
+                REAL-TIME ANALYSIS
+            </div>
+
+            <h2>
+                Security Scanner
+            </h2>
+
+            <p>
+                Analyze user input, retrieved content or proposed
+                tool actions for suspicious behavior.
+            </p>
+
+        </div>
+
+
+        <div class="scanner">
+
+            <!-- TABS -->
+
+            <div class="tabs">
+
+                <button
+                    class="tab active"
+                    data-type="input"
+                    onclick="selectType(this)">
+                    Direct Prompt
+                </button>
+
+                <button
+                    class="tab"
+                    data-type="retrieved"
+                    onclick="selectType(this)">
+                    Retrieved Content
+                </button>
+
+                <button
+                    class="tab"
+                    data-type="tool"
+                    onclick="selectType(this)">
+                    Tool Action
+                </button>
+
+            </div>
+
+
+            <!-- INPUT -->
+
+            <textarea
+                id="securityInput"
+                placeholder="Enter a user prompt to inspect..."
+                maxlength="5000"></textarea>
+
+
+            <div class="scan-row">
+
+                <span
+                    id="charCount"
+                    class="char-count">
+                    0 characters
+                </span>
+
+                <span class="char-count">
+                    Ctrl + Enter to scan
+                </span>
+
+            </div>
+
+
+            <button
+                class="scan-button primary"
+                onclick="runScan()">
+
+                🔍 Analyze Activity
+
+            </button>
+
+        </div>
+
+
+        <!-- =========================
+             RESULTS
+        ========================== -->
+
+        <div class="results">
+
+
+            <!-- RISK RESULT -->
+
+            <div class="result-card">
+
+                <h3>
+                    Security Decision
+                </h3>
+
+
+                <div class="risk">
+
+                    <div
+                        id="scoreCircle"
+                        class="score-circle">
+
+                        <span
+                            id="riskScore"
+                            class="score">
+                            0
+                        </span>
+
+                    </div>
+
+
+                    <div class="risk-info">
+
+                        <h3 id="riskTitle">
+                            No Threat Detected
+                        </h3>
+
+                        <p id="riskDescription">
+                            Submit content for security analysis.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="progress">
+
+                    <div id="riskBar"></div>
+
+                </div>
+
+
+                <div
+                    id="decisionBadge"
+                    class="result-status safe">
+
+                    ALLOW
+
+                </div>
+
+            </div>
+
+
+            <!-- THREAT RESULT -->
+
+            <div class="result-card">
+
+                <h3>
+                    Threat Analysis
+                </h3>
+
+
+                <div class="threat-list">
+
+
+                    <!-- DIRECT -->
+
+                    <div class="threat">
+
+                        <div class="threat-left">
+
+                            <div
+                                id="directIcon"
+                                class="threat-icon">
+                                ✓
+                            </div>
+
+                            <span>
+                                Direct Prompt Injection
+                            </span>
+
+                        </div>
+
+                        <span
+                            id="directStatus"
+                            class="status safe">
+                            SAFE
+                        </span>
+
+                    </div>
+
+
+                    <!-- INDIRECT -->
+
+                    <div class="threat">
+
+                        <div class="threat-left">
+
+                            <div
+                                id="indirectIcon"
+                                class="threat-icon">
+                                ✓
+                            </div>
+
+                            <span>
+                                Indirect Prompt Injection
+                            </span>
+
+                        </div>
+
+                        <span
+                            id="indirectStatus"
+                            class="status safe">
+                            SAFE
+                        </span>
+
+                    </div>
+
+
+                    <!-- MALICIOUS -->
+
+                    <div class="threat">
+
+                        <div class="threat-left">
+
+                            <div
+                                id="maliciousIcon"
+                                class="threat-icon">
+                                ✓
+                            </div>
+
+                            <span>
+                                Malicious Instructions
+                            </span>
+
+                        </div>
+
+                        <span
+                            id="maliciousStatus"
+                            class="status safe">
+                            SAFE
+                        </span>
+
+                    </div>
+
+
+                    <!-- TOOL -->
+
+                    <div class="threat">
+
+                        <div class="threat-left">
+
+                            <div
+                                id="toolIcon"
+                                class="threat-icon">
+                                ✓
+                            </div>
+
+                            <span>
+                                Tool Manipulation
+                            </span>
+
+                        </div>
+
+                        <span
+                            id="toolStatus"
+                            class="status safe">
+                            SAFE
+                        </span>
+
+                    </div>
+
+
+                    <!-- DATA -->
+
+                    <div class="threat">
+
+                        <div class="threat-left">
+
+                            <div
+                                id="dataIcon"
+                                class="threat-icon">
+                                ✓
+                            </div>
+
+                            <span>
+                                Data Exfiltration
+                            </span>
+
+                        </div>
+
+                        <span
+                            id="dataStatus"
+                            class="status safe">
+                            SAFE
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         SECURITY PIPELINE
+    ========================== -->
+
+    <section
+        class="section"
+        id="pipeline">
+
+        <div class="section-header">
+
+            <div class="badge">
+                DEFENSE ARCHITECTURE
+            </div>
+
+            <h2>
+                Security Pipeline
+            </h2>
+
+            <p>
+                Every agent operation passes through multiple
+                inspection and validation layers.
+            </p>
+
+        </div>
+
+
+        <div class="pipeline">
+
+
+            <!-- STEP 1 -->
+
+            <div class="pipeline-card">
+
+                <div class="num">
+                    01
+                </div>
+
+                <h3>
+                    Input Inspector
+                </h3>
+
+                <p>
+                    Analyze user prompts for direct instruction
+                    injection and malicious commands.
+                </p>
+
+            </div>
+
+
+            <!-- STEP 2 -->
+
+            <div class="pipeline-card">
+
+                <div class="num">
+                    02
+                </div>
+
+                <h3>
+                    Content Inspector
+                </h3>
+
+                <p>
+                    Inspect retrieved documents and external
+                    content for indirect prompt injection.
+                </p>
+
+            </div>
+
+
+            <!-- STEP 3 -->
+
+            <div class="pipeline-card">
+
+                <div class="num">
+                    03
+                </div>
+
+                <h3>
+                    Tool Guard
+                </h3>
+
+                <p>
+                    Validate proposed tool calls before
+                    allowing execution.
+                </p>
+
+            </div>
+
+
+            <!-- STEP 4 -->
+
+            <div class="pipeline-card">
+
+                <div class="num">
+                    04
+                </div>
+
+                <h3>
+                    Risk Engine
+                </h3>
+
+                <p>
+                    Combine multiple security signals into
+                    a normalized risk score.
+                </p>
+
+            </div>
+
+
+            <!-- STEP 5 -->
+
+            <div class="pipeline-card">
+
+                <div class="num">
+                    05
+                </div>
+
+                <h3>
+                    Policy Gate
+                </h3>
+
+                <p>
+                    Allow, review or block an operation based
+                    on the calculated security risk.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         ADVERSARIAL EVALUATION
+    ========================== -->
+
+    <section
+        class="section"
+        id="evaluation">
+
+        <div class="section-header">
+
+            <div class="badge">
+                SECURITY EVALUATION
+            </div>
+
+            <h2>
+                Adversarial Evaluation
+            </h2>
+
+            <p>
+                Test the defense layer against attack patterns
+                that were not used during development.
+            </p>
+
+        </div>
+
+
+        <div class="test-box">
+
+            <div class="test-grid">
+
+
+                <div class="test-case">
+
+                    <strong>
+                        Direct Injection
+                    </strong>
+
+                    <p>
+                        Attempts to replace or override the
+                        agent's existing instructions.
+                    </p>
+
+                </div>
+
+
+                <div class="test-case">
+
+                    <strong>
+                        Indirect Injection
+                    </strong>
+
+                    <p>
+                        Instructions embedded inside retrieved
+                        documents or external content.
+                    </p>
+
+                </div>
+
+
+                <div class="test-case">
+
+                    <strong>
+                        Tool Manipulation
+                    </strong>
+
+                    <p>
+                        Attempts to modify, redirect or misuse
+                        an agent's tool execution.
+                    </p>
+
+                </div>
+
+
+                <div class="test-case">
+
+                    <strong>
+                        Data Exfiltration
+                    </strong>
+
+                    <p>
+                        Attempts to expose credentials, secrets
+                        or sensitive information.
+                    </p>
+
+                </div>
+
+
+                <div class="test-case">
+
+                    <strong>
+                        Novel Attack Patterns
+                    </strong>
+
+                    <p>
+                        Previously unseen adversarial prompts are
+                        used to evaluate defense generalization.
+                    </p>
+
+                </div>
+
+
+                <div class="test-case">
+
+                    <strong>
+                        Policy Validation
+                    </strong>
+
+                    <p>
+                        Verify that suspicious operations are
+                        routed to review or blocked before execution.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         TOAST
+    ========================== -->
+
+    <div id="toast"></div>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <p>
+            AgentShield — AI Agent Security Layer
+        </p>
+
+        <p>
+            Detect • Inspect • Validate • Protect
+        </p>
+
+    </footer>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
